@@ -1,0 +1,23 @@
+{
+  "name": "desafio-integrador-3",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "homepage": "https://github.com/Santiagogc8/desafio-integrador-3-nivel-2-apx.git",
+  "scripts": {
+    "dev": "parcel",
+    "build": "parcel build",
+    "predeploy": "pnpm run build", 
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.1",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "gh-pages": "^6.3.0",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.16.0"
+  }
+}
