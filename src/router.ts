@@ -3,6 +3,9 @@ import { initHome } from "./pages/home";
 import { initGame } from "./pages/game";
 import { initResults } from "./pages/results";
 
+// AÑADIMOS LA RUTA BASE DEL REPOSITORIO DE GITHUB PAGES
+const BASE_PATH = "/desafio-integrador-3-nivel-2-apx"; 
+
 const routes = [
 	// Creamos nuestro array de rutas
 	{
@@ -23,7 +26,8 @@ let containerEl: Element; // Creamos una variable que es de tipo Element
 
 export function navigate(path: any) {
 	// Exportamos la funcion navigate que recibe un path
-	history.pushState({}, "", path); // Creamos el pushState y le pasamos los 3 argumentos requeridos (1. Estado, 2. Un titulo, 3. La url)
+    // Agregamos el BASE_PATH al pushState
+	history.pushState({}, "", BASE_PATH + path); 
 
 	containerEl.innerHTML = ""; // Limpiamos el dom del container recibido
 
@@ -45,10 +49,15 @@ export function initRouter(container: Element) {
 
 	window.onpopstate = () => {
 		// Al evento popstate le asignamos una funcion (este evento funciona para que cuando el usuario quiera devolverse, pueda renderizarse de nuevo los componentes)
-		navigate(window.location.pathname); // Y ejecuta navigate en la location deseada
+        // Limpiamos la ruta al usar popstate
+        const cleanPath = window.location.pathname.replace(BASE_PATH, "") || "/";
+		navigate(cleanPath); // Y ejecuta navigate en la location deseada
 	};
 
-	// Hacemos un ternario que valida si el usuario esta en el path "/". Si es asi, retorna "home". En caso contrario, retorna el location.pathname
-	const path = window.location.pathname === "/" ? "/home" : window.location.pathname;
+	// Limpiamos la ruta al cargar la página
+	const cleanPath = window.location.pathname.replace(BASE_PATH, "") || "/";
+
+	// Hacemos un ternario que valida si la ruta limpia es "/", para llevar al home. En caso contrario, usa la ruta limpia
+	const path = cleanPath === "/" ? "/home" : cleanPath;
 	navigate(path);
 }
