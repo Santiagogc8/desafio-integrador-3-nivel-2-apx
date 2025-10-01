@@ -6,7 +6,7 @@
   "homepage": "https://github.com/Santiagogc8/desafio-integrador-3-nivel-2-apx.git",
   "scripts": {
     "dev": "parcel",
-    "build": "parcel build",
+    "build": "parcel build --public-url /desafio-integrador-3-nivel-2-apx/",
     "predeploy": "pnpm run build", 
     "deploy": "gh-pages -d dist"
   },
