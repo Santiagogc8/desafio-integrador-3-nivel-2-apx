@@ -1,0 +1,2 @@
+:root{--dark-btn-blue:#001997;--light-btn-blue:#006cfc;--light-btn-font:#d8fcfc;--star-green:#6cb46c;--star-red:#dc5b49;--star-yellow:#e3db00;--win-bg:#4e8949b3;--loose-bg:#894949e5;--draw-bg:#9d9800bd}#root{z-index:1;min-height:100vh;position:relative;overflow-y:hidden}#root:before{content:"";z-index:-1;opacity:.15;background:url(https://thumbs.dreamstime.com/b/modelo-del-piedra-papel-o-tijera-juego-de-los-ni%C3%B1os-134992609.jpg);position:absolute;inset:0}@media (width<=350px){#root{display:none}}
+/*# sourceMappingURL=desafio-integrador-3.636b554e.css.map */
