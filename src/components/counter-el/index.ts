@@ -1,66 +1,61 @@
-import {navigate} from '../../router';
-import { state } from '../../state'
+import { navigate } from '../../router';
 
 class CounterEl extends HTMLElement {
-	// Creamos un customElement para el contador
-	shadow: ShadowRoot; // Le decimos que tendra shadow
-	interval: any; // Y un interval
+    // Creamos un customElement para el contador
+    shadow: ShadowRoot; // Le decimos que tendrá shadow
+    interval: any; // Y un intervalo repetitivo para el conteo
 
-	static get observedAttributes() {
-		return ["count"]; // Observamos el atributo 'count' con el metodo observedAttributes de los customElements
-	}
+    static get observedAttributes() {
+        return ["count"]; // Observamos el atributo 'count' para actualizar el contador cuando cambie
+    }
 
-	constructor() {
-		super();
-		this.shadow = this.attachShadow({ mode: "open" }); // Inicializamos el shadow
-		this.render();
-	}
+    constructor() {
+        super();
+        this.shadow = this.attachShadow({ mode: "open" }); // Inicializamos el shadow DOM abierto
+        this.render();
+    }
 
-	render() {
-		// Creamos el metodo render
-		// Limpiamos el contenido anterior
-		this.shadow.innerHTML = "";
+    render() {
+        // Método para renderizar el contenido del shadow
+        this.shadow.innerHTML = ""; // Limpiamos contenido previo
 
-		// Creamos el div, un span y el style
-		const div = document.createElement("div");
+        const div = document.createElement("div");
         const span = document.createElement('span');
         const style = document.createElement("style");
-        
 
-        // Le agregamos un svg al div (para hacer el contador)
+        // Agregamos el SVG para el anillo de progreso
         div.innerHTML = `
             <svg class="progress-ring" viewBox="0 0 100 100">
-                <circle
-                    class="ring-bg"
-                    cx="50" cy="50" r="45"
-                ></circle>
-                <circle
-                    class="ring-progress"
-                    cx="50" cy="50" r="45"
-                    stroke-dasharray="283"
-                    stroke-dashoffset="0"
-                ></circle>
+                <circle class="ring-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="45" stroke-dasharray="283" stroke-dashoffset="0"></circle>
             </svg>
         `;
 
-        div.appendChild(span); // Le agregamos el span al div
+        div.appendChild(span); // Añadimos el span para mostrar segundos restantes
 
-		let seconds: number = parseInt(this.getAttribute("count")!) || 0; // E inicializamos a seconds con el valor obtenido del atributo count o 0
+        let seconds: number = parseInt(this.getAttribute("count")!) || 0; // Valor inicial del atributo count
 
-		const updateCounter = () => {
-            // Actualiza el número visible
-            span.textContent = `${seconds}`;
+        // Función para actualizar el contador cada segundo
+        const updateCounter = () => {
+            span.textContent = `${seconds}`; // Mostrar el tiempo restante
+            if (seconds < 0) { // Cuando finalice el conteo
+                div.style.display = 'none'; // Ocultar el contador
+                clearInterval(this.interval); // Detener el intervalo
+                
+                // Disparar evento custom para avisar que terminó el contador
+                this.dispatchEvent(new CustomEvent('counter-finished', {
+                    bubbles: true,
+                    composed: true
+                }));
 
-            if (seconds < 0) { // Cuando sea menor a 0
-                div.style.display = 'none'; // Lo dejamos de mostrar
-                clearInterval(this.interval); // Y terminamos el intervalo
-                navigate('/' + this.getAttribute('route'))
+                // Navegar a la ruta indicada
+                navigate('/' + this.getAttribute('route'));
             }
-            
-            seconds--; // Cambiamos el numero del contador
+            seconds--; // Restar 1 al contador
         };
 
-		style.innerHTML = `
+        // Estilos para el componente contador
+        style.innerHTML = `
             div {
                 width: 200px;
                 height: 200px;
@@ -77,14 +72,14 @@ class CounterEl extends HTMLElement {
                 z-index: 2;
                 color: black;
             }
-            
+
             .progress-ring {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                transform: rotate(-90deg); 
+                transform: rotate(-90deg);
             }
-            
+
             .ring-bg {
                 fill: none;
                 stroke: #e0e0e0;
@@ -96,7 +91,7 @@ class CounterEl extends HTMLElement {
                 stroke: black;
                 stroke-width: 10;
                 stroke-dasharray: 283;
-                stroke-dashoffset: 0; 
+                stroke-dashoffset: 0;
                 animation: sweep 1s linear infinite;
             }
 
@@ -104,32 +99,32 @@ class CounterEl extends HTMLElement {
                 from {
                     stroke-dashoffset: 0;
                 }
-
                 to {
-                    stroke-dashoffset: 283; 
+                    stroke-dashoffset: 283;
                 }
             }
         `;
 
-		this.shadow.appendChild(style);
-		this.shadow.appendChild(div);
+        this.shadow.appendChild(style);
+        this.shadow.appendChild(div);
 
-        updateCounter(); 
-        // Iniciamos el intervalo para que se ejecute cada 1s
-        this.interval = setInterval(updateCounter, 1000);
-	}
+        updateCounter(); // Actualizamos el contador inmediatamente
 
-    // Ejecutamos el metodo attributeChangedCallback
-	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-		if (name === "count") {
-			clearInterval(this.interval); // Limpia el intervalo anterior
-			this.render(); // Vuelve a renderizar con el nuevo valor
-		}
-	}
+        this.interval = setInterval(updateCounter, 1000); // Ejecutamos updateCounter cada segundo
+    }
 
-	disconnectedCallback() { // Y ejecuta el metodo disconnectedCallback para que no se ejecute en segundo plano el intervalo
-		clearInterval(this.interval);
-	}
+    // Se ejecuta cuando cambia algún atributo observado, como "count"
+    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+        if (name === "count") {
+            clearInterval(this.interval); // Limpiamos el intervalo previo al cambiar el contador
+            this.render(); // Volvemos a renderizar con el nuevo valor
+        }
+    }
+
+    // Cuando el elemento se elimina del DOM limpiamos el intervalo para evitar fugas de memoria
+    disconnectedCallback() {
+        clearInterval(this.interval);
+    }
 }
 
-customElements.define("counter-el", CounterEl);
+customElements.define("counter-el", CounterEl); // Registramos el elemento personalizado

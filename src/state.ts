@@ -50,6 +50,10 @@ const state = { // Creamos nuestro state
         }
     },
     setMoves(move: string){ // Creamos un metodo para que nos permita establecer la jugada del usuario
+        if (this.data.play.user !== "") {
+            return;
+        }
+
         const moveMap: { [key: number]: string } = { // Creamos un mapa que contiene los posibles movimientos
             0: 'piedra',
             1: 'papel',
