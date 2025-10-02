@@ -1,4 +1,4 @@
-let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLocalStorage(){let e=localStorage.getItem("state");if(e){let t=JSON.parse(e);this.data={...this.data,...t}}},getState(){return this.data},setState(e){for(let t of(this.data={...this.data,...e},this.listeners))t(this.data);this.setLocalStorage(this.getState())},subscribe(e){return this.listeners.push(e),()=>{this.listeners=this.listeners.filter(t=>t!==e)}},setMoves(e){let t={user:e,machine:{0:"piedra",1:"papel",2:"tijeras"}[Math.floor(3*Math.random())]},i=this.whoWins(t).toLocaleLowerCase(),s=[...this.getState().history,{...t,score:i}];this.setState({play:t,history:s})},whoWins:e=>e.user===e.machine?"Empate":e.machine===({tijeras:"papel",papel:"piedra",piedra:"tijeras"})[e.user]?"Ganaste":"Perdiste",setLocalStorage(e){localStorage.setItem("state",JSON.stringify(e))}};t.initLocalStorage();const i="/desafio-integrador-3-nivel-2-apx",s=[{path:/\/home/,page:function(){let e=document.createElement("div");e.classList.add("welcome__container"),e.innerHTML=`
+let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLocalStorage(){let e=localStorage.getItem("state");if(e){let t=JSON.parse(e);this.data={...this.data,...t}}},getState(){return this.data},setState(e){for(let t of(this.data={...this.data,...e},this.listeners))t(this.data);this.setLocalStorage(this.getState())},subscribe(e){return this.listeners.push(e),()=>{this.listeners=this.listeners.filter(t=>t!==e)}},setMoves(e){if(""!==this.data.play.user)return;let t={user:e,machine:{0:"piedra",1:"papel",2:"tijeras"}[Math.floor(3*Math.random())]},i=this.whoWins(t).toLocaleLowerCase(),s=[...this.getState().history,{...t,score:i}];this.setState({play:t,history:s})},whoWins:e=>e.user===e.machine?"Empate":e.machine===({tijeras:"papel",papel:"piedra",piedra:"tijeras"})[e.user]?"Ganaste":"Perdiste",setLocalStorage(e){localStorage.setItem("state",JSON.stringify(e))}};t.initLocalStorage();const i="/desafio-integrador-3-nivel-2-apx",s=[{path:/\/home/,page:function(){let e=document.createElement("div");e.classList.add("welcome__container"),e.innerHTML=`
         <h1>Piedra Papel <span>\xf3</span> Tijera</h1>
         <button-el></button-el>
         <div class='selection__container'>
@@ -50,59 +50,59 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
         selection-el:last-child{
             width: clamp(68px, 8.5vw, 97px);;
         }
-    `;let i=e.querySelector("button-el");return i?.addEventListener("click",()=>{a("/game")}),e.appendChild(t),e}},{path:/\/game/,page:function(){let e=document.createElement("div");e.classList.add("welcome__container"),e.innerHTML=`
-            <p>Presiona jugar y elige: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
-            <button-el>\xa1Jugar!</button-el>
-            <div class='selection__container'>
-                <selection-el image="tijeras"></selection-el>
-                <selection-el image="piedra"></selection-el>
-                <selection-el image="papel"></selection-el>
-            </div>
-        `;let i=document.createElement("style");i.innerHTML=`
-            .welcome__container{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                min-width: 322px;
-                max-width: 336px;
-                margin: 0 auto;
-                position: relative;
-                padding-bottom: 98px;
-            }
-    
-            p{
-                font-size: 40px;
-                margin-bottom: 48px;
-                text-align: center;
-                font-weight: 600;
-            }
-    
-            span{
-                color: #91CCAF;
-            }
-    
-            button-el{
-                width: 100%;
-            }
-    
-            .selection__container{
-                position: absolute;
-                bottom: -30px;
-                display: flex;
-                gap: clamp(46px, 8vw, 65px);
-                z-index: 2;
-            }
+    `;let i=e.querySelector("button-el");return i?.addEventListener("click",()=>{n("/game")}),e.appendChild(t),e}},{path:/\/game/,page:function(){let e=document.createElement("div");e.classList.add("welcome__container"),e.innerHTML=`
+        <p>Presiona jugar y elige: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
+        <button-el>\xa1Jugar!</button-el>
+        <div class='selection__container'>
+            <selection-el image="tijeras"></selection-el>
+            <selection-el image="piedra"></selection-el>
+            <selection-el image="papel"></selection-el>
+        </div>
+    `;let i=document.createElement("style");i.innerHTML=`
+        .welcome__container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-width: 322px;
+            max-width: 336px;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 98px;
+        }
 
-            selection-el{
-                width: clamp(57px, 8vw, 97px);
-            }
+        p{
+            font-size: 40px;
+            margin-bottom: 48px;
+            text-align: center;
+            font-weight: 600;
+        }
 
-            selection-el:last-child{
-                width: clamp(65px, 9vw, 115px);
-            }
-        `;let s=e.querySelector("p"),a=e.querySelector("button-el"),n=e.querySelectorAll("selection-el");return a?.addEventListener("click",()=>{let i=document.createElement("counter-el");i.setAttribute("count","3"),i.setAttribute("route","results"),t.setState({play:{user:"",machine:""}}),a.replaceWith(i),s?.remove(),e.addEventListener("selection-info",e=>{let i=e.detail.selection;n.forEach(e=>{let t=e.shadowRoot?.querySelector("img");t.style.transform="scale(1)",t.style.opacity="0.5",e.getAttribute("image")===i&&(t.style.transform="scale(1.5)",t.style.opacity="1")}),t.setMoves(i)})}),e.appendChild(i),e}},{path:/\/results/,page:function(){let e=t.getState(),i=e.history.filter(e=>"ganaste"===e.score).length,s=e.history.filter(e=>"perdiste"===e.score).length,n=document.createElement("div");if(""!==e.play.user)n.innerHTML=`
+        span{
+            color: #91CCAF;
+        }
+
+        button-el{
+            width: 100%;
+        }
+
+        .selection__container{
+            position: absolute;
+            bottom: -30px;
+            display: flex;
+            gap: clamp(46px, 8vw, 65px);
+            z-index: 2;
+        }
+
+        selection-el{
+            width: clamp(57px, 8vw, 97px);
+        }
+
+        selection-el:last-child{
+            width: clamp(65px, 9vw, 115px);
+        }
+    `;let s=e.querySelector("p"),n=e.querySelector("button-el"),a=e.querySelectorAll("selection-el"),o="";return n?.addEventListener("click",()=>{let i=document.createElement("counter-el");i.setAttribute("count","3"),i.setAttribute("route","results"),t.setState({play:{user:"",machine:""}}),n.replaceWith(i),s?.remove();let l=e=>{let t=e.detail.selection;a.forEach(e=>{let i=e.shadowRoot?.querySelector("img");i&&(i.style.transform="scale(1)",i.style.opacity="0.5",e.getAttribute("image")===t&&(i.style.transform="scale(1.5)",i.style.opacity="1"))}),o=t};e.addEventListener("selection-info",l),i.addEventListener("counter-finished",()=>{t.setMoves(o),e.removeEventListener("selection-info",l)})}),e.appendChild(i),e}},{path:/\/results/,page:function(){let e=t.getState(),i=e.history.filter(e=>"ganaste"===e.score).length,s=e.history.filter(e=>"perdiste"===e.score).length,a=document.createElement("div");if(""!==e.play.user)a.innerHTML=`
             <selection-el image="${e.play.machine}" class="machine-play"></selection-el>
             <selection-el image="${e.play.user}" class="user-play"></selection-el>
             <div class='result'>
@@ -114,12 +114,12 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
                 </div>
                 <button-el>Volver a jugar</button-el>
             </div>
-        `,setTimeout(()=>{n.querySelector(".result").style.display="flex",setTimeout(()=>{s-i==10&&alert("La maquina te esta padriando maestro, tomate un respiro")},1e3)},2e3),n.querySelector("button-el")?.addEventListener("click",()=>{a("/game")});else{n.innerHTML=`
+        `,setTimeout(()=>{a.querySelector(".result").style.display="flex",setTimeout(()=>{s-i==10&&alert("La maquina te esta padriando maestro, tomate un respiro")},1e3)},2e3),a.querySelector("button-el")?.addEventListener("click",()=>{n("/game")});else{a.innerHTML=`
             <div class='result__fallback'>
                 <h4>Vaya, parece que no has jugado</h4>
                 <button-el>Llevame al juego!</button-el>
             </div>
-        `;let e=n.querySelector("button-el");e?.addEventListener("click",()=>{a("/game")})}let o=document.createElement("style");return o.innerHTML=`
+        `;let e=a.querySelector("button-el");e?.addEventListener("click",()=>{n("/game")})}let o=document.createElement("style");return o.innerHTML=`
         .machine-play{
             position: absolute;
             top: -20px;
@@ -186,7 +186,7 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
             text-align: center;
             margin-bottom: 15px;
         }
-    `,n.appendChild(o),n}}];function a(t){history.pushState({},"",i+t),e.innerHTML="";let a=s.find(e=>e.path.test(t));if(a){let t=a.page();e.appendChild(t)}else e.innerHTML=`<h4>Oh no, parece que te has perdido \u{1F630}. La ruta que estabas buscando no existe.</h4>`}class n extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"}),this.render()}render(){let e=document.createElement("button");e.textContent=this.textContent||"Empezar";let t=document.createElement("style");t.innerHTML=`
+    `,a.appendChild(o),a}}];function n(t){history.pushState({},"",i+t),e.innerHTML="";let n=s.find(e=>e.path.test(t));if(n){let t=n.page();e.appendChild(t)}else e.innerHTML=`<h4>Oh no, parece que te has perdido \u{1F630}. La ruta que estabas buscando no existe.</h4>`}class a extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"}),this.render()}render(){let e=document.createElement("button");e.textContent=this.textContent||"Empezar";let t=document.createElement("style");t.innerHTML=`
             button{
                 font-family: 'Odibee Sans', sans-serif;
                 width: 100%;
@@ -201,7 +201,7 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
             button:hover{
                 cursor: pointer;
             }
-        `,this.shadow.appendChild(t),this.shadow.appendChild(e)}}customElements.define("button-el",n);var o={};o=import.meta.resolve("72eu7");var l={};l=import.meta.resolve("7Nkwz");var r={};r=import.meta.resolve("efEvF");class c extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"}),this.render()}render(){let e=document.createElement("img"),t=this.getAttribute("image"),i=document.createElement("style"),s={tijeras:o,piedra:l,papel:r}[t];s&&(e.src=s,e.classList.add(t)),e.alt="seleccion",i.innerHTML=`
+        `,this.shadow.appendChild(t),this.shadow.appendChild(e)}}customElements.define("button-el",a);var o={};o=import.meta.resolve("72eu7");var l={};l=import.meta.resolve("7Nkwz");var r={};r=import.meta.resolve("efEvF");class c extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"}),this.render()}render(){let e=document.createElement("img"),t=this.getAttribute("image"),i=document.createElement("style"),s={tijeras:o,piedra:l,papel:r}[t];s&&(e.src=s,e.classList.add(t)),e.alt="seleccion",i.innerHTML=`
             img{
                 transition: all 0.3s ease-in-out;
                 width: 100%;
@@ -214,18 +214,10 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
             </svg>
         `,e.style.fontFamily="Odibee Sans, sans-serif";let i=e.querySelector("svg").querySelector("path");t?.toLocaleLowerCase()==="perdiste"&&i.setAttribute("fill","var(--star-red)"),t?.toLocaleLowerCase()==="empate"&&i.setAttribute("fill","var(--star-yellow)"),this.shadow.appendChild(e)}}customElements.define("star-result",d);class p extends HTMLElement{static get observedAttributes(){return["count"]}constructor(){super(),this.shadow=this.attachShadow({mode:"open"}),this.render()}render(){this.shadow.innerHTML="";let e=document.createElement("div"),t=document.createElement("span"),i=document.createElement("style");e.innerHTML=`
             <svg class="progress-ring" viewBox="0 0 100 100">
-                <circle
-                    class="ring-bg"
-                    cx="50" cy="50" r="45"
-                ></circle>
-                <circle
-                    class="ring-progress"
-                    cx="50" cy="50" r="45"
-                    stroke-dasharray="283"
-                    stroke-dashoffset="0"
-                ></circle>
+                <circle class="ring-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="45" stroke-dasharray="283" stroke-dashoffset="0"></circle>
             </svg>
-        `,e.appendChild(t);let s=parseInt(this.getAttribute("count"))||0,n=()=>{t.textContent=`${s}`,s<0&&(e.style.display="none",clearInterval(this.interval),a("/"+this.getAttribute("route"))),s--};i.innerHTML=`
+        `,e.appendChild(t);let s=parseInt(this.getAttribute("count"))||0,a=()=>{t.textContent=`${s}`,s<0&&(e.style.display="none",clearInterval(this.interval),this.dispatchEvent(new CustomEvent("counter-finished",{bubbles:!0,composed:!0})),n("/"+this.getAttribute("route"))),s--};i.innerHTML=`
             div {
                 width: 200px;
                 height: 200px;
@@ -242,14 +234,14 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
                 z-index: 2;
                 color: black;
             }
-            
+
             .progress-ring {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                transform: rotate(-90deg); 
+                transform: rotate(-90deg);
             }
-            
+
             .ring-bg {
                 fill: none;
                 stroke: #e0e0e0;
@@ -261,7 +253,7 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
                 stroke: black;
                 stroke-width: 10;
                 stroke-dasharray: 283;
-                stroke-dashoffset: 0; 
+                stroke-dashoffset: 0;
                 animation: sweep 1s linear infinite;
             }
 
@@ -269,10 +261,9 @@ let e;const t={data:{history:[],play:{user:"",machine:""}},listeners:[],initLoca
                 from {
                     stroke-dashoffset: 0;
                 }
-
                 to {
-                    stroke-dashoffset: 283; 
+                    stroke-dashoffset: 283;
                 }
             }
-        `,this.shadow.appendChild(i),this.shadow.appendChild(e),n(),this.interval=setInterval(n,1e3)}attributeChangedCallback(e,t,i){"count"===e&&(clearInterval(this.interval),this.render())}disconnectedCallback(){clearInterval(this.interval)}}customElements.define("counter-el",p),e=document.querySelector("#root"),window.onpopstate=()=>{a(window.location.pathname.replace(i,"")||"/")};const h=window.location.pathname.replace(i,"")||"/";a("/"===h?"/home":h);
-//# sourceMappingURL=desafio-integrador-3.8c7e4cab.js.map
+        `,this.shadow.appendChild(i),this.shadow.appendChild(e),a(),this.interval=setInterval(a,1e3)}attributeChangedCallback(e,t,i){"count"===e&&(clearInterval(this.interval),this.render())}disconnectedCallback(){clearInterval(this.interval)}}customElements.define("counter-el",p),e=document.querySelector("#root"),window.onpopstate=()=>{n(window.location.pathname.replace(i,"")||"/")};const h=window.location.pathname.replace(i,"")||"/";n("/"===h?"/home":h);
+//# sourceMappingURL=desafio-integrador-3.a6a270bf.js.map
